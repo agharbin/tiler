@@ -11,7 +11,8 @@ namespace tiler {
     Map::~Map(){
     
     }
-    void Map::loadFromFile(std::string filename){
-    
+    void Map::loadFromFile(const std::string filename){
+        map = new Tmx::Map();
+        map->ParseFile(filename);
     }
 }

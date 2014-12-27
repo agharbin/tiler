@@ -1,11 +1,14 @@
-all: driver.o tiler.o
-	g++ -o build/test build/driver.o build/tiler.o -lSDL2
+SOURCES = test/driver.cpp src/tiler.cpp 
+OBJECTS = $(SOURCES:.cpp=.o)
+LIBRARIES = -lSDL2 -ltmxparser
 
-driver.o: test/driver.cpp
-	g++ -o build/driver.o test/driver.cpp -c
+all: test
 
-tiler.o: src/tiler.o
-	g++ -o build/tiler.o src/tiler.cpp -c
+test: $(OBJECTS)
+	g++ -o test/test $(INCLUDES) $(LIBRARIES) $(OBJECTS)
+
+.cpp.o: $(SOURCES)
+	g++ -o $(<:.cpp=.o) -c $<
 
 clean:
-	rm build/*
+	rm build/* ./src/*.o ./test/*.o

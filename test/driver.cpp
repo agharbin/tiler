@@ -31,7 +31,12 @@ int main(int argc, char ** argv) {
         SDL_Quit();
         return 3;
     }
-    
+
+    // Tiler functionality
+    tiler::Map map;
+    std::cout << "Loading file..." << std::endl;
+    map.loadFromFile("example.tmx");
+    std::cout << "...done" << std::endl;
 
     SDL_Event e;
     bool quit = false;

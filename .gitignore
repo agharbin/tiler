@@ -1,1 +1,9 @@
+# Build files
 /build/*
+/test/test
+
+# Object files
+*.o
+
+# Vim files
+*.swp
