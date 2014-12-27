@@ -12,3 +12,4 @@ test: $(OBJECTS)
 
 clean:
 	rm build/* ./src/*.o ./test/*.o
+	rm test/test
