@@ -6,6 +6,8 @@
 const int WINDOW_WIDTH = 640;
 const int WINDOW_HEIGHT = 480;
 
+using namespace tiler;
+
 /*
  * A test program for the tiler functionality
  */
@@ -46,14 +48,17 @@ void test(const std::string testName, bool passed) {
     }
 }
 
-bool testLoadFromFile() {
+bool testLoadFromFile(SDL_Renderer * r) {
     tiler::Map map;
+    map.setRenderer(r);
     try {
         map.loadFromFile("test/example.tmx");
     } catch(std::string err) {
         std::cout << err << std::endl;
         return false;
-    }
+    } catch(ExNoRenderer* e){
+        std::cout << e->what() << std::endl;
+    }    
     return true;
 }
 
@@ -70,8 +75,9 @@ bool testFileOpen() {
     }
 }
 
-bool testLoadImages() {
+bool testLoadImages(SDL_Renderer* r) {
     tiler::Map map;
+    map.setRenderer(r);
     try {
         map.loadFromFile("test/example.tmx");
         if(map.numImages() != 1) { 
@@ -81,7 +87,9 @@ bool testLoadImages() {
     } catch(std::string err) {
         std::cout << err << std::endl;
         return false;
-    }
+    } catch(ExNoRenderer* e){
+        std::cout << e->what() << std::endl;
+    }  
     return true;
 
 }
@@ -90,8 +98,8 @@ int main(int argc, char ** argv) {
     SDL_Renderer * renderer = setup();
     
     test("Open tmx file", testFileOpen());
-    test("Load tmx file", testLoadFromFile());
-    test("Load image files into map object" ,testLoadImages());
+    test("Load tmx file", testLoadFromFile(renderer));
+    test("Load image files into map object" ,testLoadImages(renderer));
 
     /*
     SDL_Event e;

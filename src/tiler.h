@@ -14,15 +14,20 @@ namespace tiler {
     class Map {
         private:
             Tmx::Map * map;
-            std::vector<SDL_Surface*> images;
+            std::vector<SDL_Texture*> images;
             SDL_Renderer * renderer;
         public:
             Map();
             ~Map();
             void loadFromFile(const std::string);
             void drawMap(int x_offset, int y_offset);
-            void registerRenderer(SDL_Renderer *);
+            void setRenderer(SDL_Renderer *);
             int numImages();
+    };
+
+    class ExNoRenderer : std::exception {
+        public:
+            const char* what() const _NOEXCEPT;
     };
 }
 

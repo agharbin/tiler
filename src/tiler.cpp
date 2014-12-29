@@ -1,6 +1,5 @@
 #include "tiler.h"
 #include <SDL2_image/SDL_image.h>
-// #include <iostream> // DEBUGGING
 
 /*
  * A library for drawing 2D tilemaps using SDL
@@ -8,10 +7,8 @@
 
 namespace tiler {
     Map::Map(){
-        int flags = IMG_Init(IMG_INIT_PNG);
-        if(flags != IMG_INIT_PNG) {
-            // Error condition
-        }
+        this->map = nullptr;
+        this->renderer = nullptr;
     }
     Map::~Map(){
     
@@ -24,6 +21,7 @@ namespace tiler {
         map->ParseFile(filename);
 
         if(map->HasError() == true) { throw map->GetErrorText(); }
+        if(this->renderer == nullptr) { throw new ExNoRenderer(); }
         
         // Load image files
         const std::vector<Tmx::Tileset*>& tileSets = map->GetTilesets();
@@ -33,13 +31,22 @@ namespace tiler {
             const std::string source = image->GetSource();
             SDL_RWops * rwop = SDL_RWFromFile(source.c_str(),"r");
             SDL_Surface * surf = IMG_LoadPNG_RW(rwop);
-            this->images.push_back(surf);
+            SDL_Texture * tex = SDL_CreateTextureFromSurface(this->renderer, surf);
+            this->images.push_back(tex);
         }
     }
-    void Map::registerRenderer(SDL_Renderer * r){
+    void Map::setRenderer(SDL_Renderer * r){
         this->renderer = r;
     }
     void Map::drawMap(int x_offset, int y_offset) {
         
     }
+
+    /*
+     * Exception Classes
+     */
+
+    const char* ExNoRenderer::what() const _NOEXCEPT {
+        return "Renderer has not been set";
+    } 
 }
