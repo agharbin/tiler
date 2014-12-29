@@ -1,6 +1,6 @@
 SOURCES = test/driver.cpp src/tiler.cpp 
 OBJECTS = $(SOURCES:.cpp=.o)
-LIBRARIES = -lSDL2 -ltmxparser
+LIBRARIES = -framework SDL2 -framework SDL2_image -ltmxparser
 
 all: test
 
