@@ -17,8 +17,8 @@ namespace tiler {
         return images.size();
     }
     void Map::loadFromFile(const std::string filename){
-        map = new Tmx::Map();
-        map->ParseFile(filename);
+        this->map = new Tmx::Map();
+        this->map->ParseFile(filename);
 
         if(map->HasError() == true) { throw map->GetErrorText(); }
         if(this->renderer == nullptr) { throw new ExNoRenderer(); }
@@ -39,7 +39,38 @@ namespace tiler {
         this->renderer = r;
     }
     void Map::drawMap(int x_offset, int y_offset) {
-        
+        const std::vector<Tmx::Layer*> &layers = this->map->GetLayers();
+        int layerWidth = 0;
+        int layerHeight = 0;
+        int tileId = 0;
+        int tilePos = 0;
+        int tileSetIndex = 0;
+        Tmx::Layer* layer;
+        SDL_Rect drawDest;
+        SDL_Rect drawSrc;
+        int tileWidth = map->GetTileWidth();
+        int tileHeight = map->GetTileHeight();
+
+        for(int i = 0; i < layers.size(); ++i){
+            layer = layers[i];
+            layerWidth = layer->GetWidth();
+            layerHeight = layer->GetHeight();
+            for(int y = 0; y < layerHeight; ++y){
+                for(int x = 0; x < layerWidth; ++x){
+                    tileId = layer->GetTileId(x, y);
+                    tileSetIndex = layer->GetTileTilesetIndex(x,y);
+                    tilePos = this->map->FindTilesetIndex(tileId);
+
+                    drawSrc.x = tilePos % layerWidth;
+                    drawSrc.y = tilePos / layerWidth;
+
+                    drawDest.x = x;
+                    drawDest.y = y;
+
+                    SDL_RenderCopy(this->renderer, this->images[tileSetIndex], &drawSrc, &drawDest);
+                }
+            }
+        }
     }
 
     /*
