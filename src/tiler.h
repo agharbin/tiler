@@ -16,11 +16,13 @@ namespace tiler {
             Tmx::Map * map;
             std::vector<SDL_Texture*> images;
             SDL_Renderer * renderer;
+
+            void drawTile(int, int, int, int);
         public:
             Map();
             ~Map();
             void loadFromFile(const std::string);
-            void drawMap(int x_offset, int y_offset);
+            void drawMap(int ,int, int, int);
             void setRenderer(SDL_Renderer *);
             int numImages();
     };

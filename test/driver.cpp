@@ -101,17 +101,45 @@ int main(int argc, char ** argv) {
     test("Load tmx file", testLoadFromFile(renderer));
     test("Load image files into map object" ,testLoadImages(renderer));
 
-    /*
+    tiler::Map map;
+    map.setRenderer(renderer);
+    map.loadFromFile("test/example.tmx");
+
+    int x = 0;
+    int y = 0;
+
+    int scroll_x = 0;
+    int scroll_y = 0;
+
     SDL_Event e;
     bool quit = false;
     while(quit == false){
+        x += scroll_x;
+        y += scroll_y;
+
+        SDL_RenderClear(renderer);
+        map.drawMap(x, y, WINDOW_WIDTH, WINDOW_HEIGHT);
+        SDL_RenderPresent(renderer);
+
         while(SDL_PollEvent(&e)){
             if(e.type == SDL_QUIT){
                 quit = true;
             }
+            if(e.type == SDL_KEYDOWN){
+                if(e.key.keysym.sym == SDLK_w) { scroll_y = -1; }
+                if(e.key.keysym.sym == SDLK_a) { scroll_x = -1; }
+                if(e.key.keysym.sym == SDLK_s) { scroll_y = 1; }
+                if(e.key.keysym.sym == SDLK_d) { scroll_x = 1; }
+            }
+            if(e.type == SDL_KEYUP){
+                if(e.key.keysym.sym == SDLK_w) { scroll_y = 0; }
+                if(e.key.keysym.sym == SDLK_a) { scroll_x = 0; }
+                if(e.key.keysym.sym == SDLK_s) { scroll_y = 0; }
+                if(e.key.keysym.sym == SDLK_d) { scroll_x = 0; }
+
+            }
         }
     }
-    */
 
     teardown();
     return 0;

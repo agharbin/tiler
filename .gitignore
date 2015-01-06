@@ -7,3 +7,6 @@
 
 # Vim files
 *.swp
+
+.*
+!/.gitignore
