@@ -3,8 +3,6 @@
 
 /*
  * A library for drawing 2D tilemaps using SDL
- *
- * TODO: Fix scrolling off left and top boundaries
  */
 
 namespace tiler {
@@ -90,11 +88,9 @@ namespace tiler {
             }
             if(x_offset > tile_w) {
                 start_x = x_offset / tile_w;
-                x_offset -= start_x * tile_w;
             }
             if(y_offset > tile_h) {
                 start_y = y_offset / tile_h;
-                y_offset -= start_y * tile_h;
             }
 
             // Draw all tiles in this layer after clipping.
